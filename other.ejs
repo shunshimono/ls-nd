@@ -6,10 +6,13 @@
     <title><%=title %></title>
     <link rel="stylesheet" href="./style.css" />
   </head>
-  <body>
-    <%=title %>
-    <h1>Other.ejs</h1>
-    <p>これは、Indexページです</p>
-    <p><a href="./">index.js</a></p>
+  <body class="container">
+    <header>
+      <h1 class="display-4"><%=title %></h1>
+    </header>
+    <div role="main">
+      <p><%=content %></p>
+      <p><a href="/">Index Pageに移動 &gt;&gt;</a></p>
+    </div>
   </body>
 </html>
