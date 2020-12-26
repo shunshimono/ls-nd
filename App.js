@@ -1,8 +1,10 @@
-/**
- * httpモジュールをインストール
- * httpとは？サーバとクライアントの対話を可能にするプロトコルのこと
- */
 const http = require("http");
+const fs = require("fs");
+const ejs = require("ejs");
+const url = require("url");
+
+const index_page = fs.readFileSync("./index.ejs", "utf8");
+const other_page = fs.readFileSync("./other.ejs", "utf8");
 
 /**
  * リクエストとレスポンスを管理する関数
@@ -11,7 +13,30 @@ const http = require("http");
  * @param {Object} response http.ServerResponse
  */
 const controlRequestAndResponse = (request, response) => {
-  response.end("hello node.js");
+  var url_parts = url.parse(request.url);
+  switch (url_parts.pathname) {
+    case "/":
+      var content = ejs.render(index_page, {
+        title: "shimonoshun",
+      });
+      response.writeHead(200, { "Content-type": "text/html" });
+      response.write(content);
+      response.end();
+      break;
+    case "/other":
+      var content = ejs.render(other_page, {
+        title: "shimonoarisa",
+      });
+      response.writeHead(200, { "Content-type": "text/html" });
+      response.write(content);
+      response.end();
+      break;
+    default:
+      response.writeHead(200, { "Content-type": "text/plain" });
+      response.write("no..page");
+      response.end();
+      break;
+  }
 };
 
 /**
@@ -21,3 +46,5 @@ const controlRequestAndResponse = (request, response) => {
 var server = http.createServer(controlRequestAndResponse);
 
 server.listen(3000);
+
+console.log("start server");
