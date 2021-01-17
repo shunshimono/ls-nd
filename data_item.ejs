@@ -1,5 +1,6 @@
+<% if (val != ''){ %> <% var obj = JSON.parse(val); %>
 <tr>
-  <th><%= id %></th>
-  <td><%= key %></td>
-  <td><%= val[0] %></td>
+  <th><%= obj.id %></th>
+  <td><%= obj.msg %></td>
 </tr>
+<% } %>
