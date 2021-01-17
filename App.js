@@ -41,15 +41,15 @@ function response_login(_, response) {
 function response_index(request, response) {
     // POSTアクセス時の処理
     if (request.method == "POST") {
-        var body = "";
+        var body_1 = "";
         // データ受信のイベント処理
         request.on("data", function (data) {
-            body += data;
+            body_1 += data;
         });
         // データ受信終了のイベント処理
         request.on("end", function () {
             var data;
-            data = qs.parse(body);
+            data = qs.parse(body_1);
             addToData(data.id, data.msg, filename, request);
             write_index(request, response);
         });

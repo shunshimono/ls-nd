@@ -11,10 +11,10 @@ const login_page = fs.readFileSync("./login.ejs", "utf8");
 
 const max_num = 10; // 最大保管数
 const filename = "mydata.txt"; // データファイル名
-var message_data; // データ
+let message_data: string[]; // データ
 readFromFile(filename);
 
-var server = http.createServer(getFromClient);
+const server = http.createServer(getFromClient);
 
 server.listen(3000);
 console.log("Server start!");
@@ -23,11 +23,10 @@ console.log("Server start!");
 
 // createServerの処理
 function getFromClient(request, response) {
-  var url_parts = url.parse(request.url, true);
+  const url_parts = url.parse(request.url, true);
   switch (url_parts.pathname) {
     case "/": // トップページ（メッセージボード）
       response_index(request, response);
-      scrollTo(0, 0);
       break;
 
     case "/login": // ログインページ
@@ -43,7 +42,7 @@ function getFromClient(request, response) {
 
 // loginのアクセス処理
 function response_login(_, response) {
-  var content = ejs.render(login_page, {});
+  const content = ejs.render(login_page, {});
   response.writeHead(200, { "Content-Type": "text/html" });
   response.write(content);
   response.end();
@@ -53,7 +52,7 @@ function response_login(_, response) {
 function response_index(request, response) {
   // POSTアクセス時の処理
   if (request.method == "POST") {
-    var body = "";
+    let body = "";
 
     // データ受信のイベント処理
     request.on("data", function (data) {
@@ -62,7 +61,7 @@ function response_index(request, response) {
 
     // データ受信終了のイベント処理
     request.on("end", function () {
-      var data;
+      let data;
       data = qs.parse(body);
       addToData(data.id, data.msg, filename, request);
       write_index(request, response);
@@ -74,8 +73,8 @@ function response_index(request, response) {
 
 // indexのページ作成
 function write_index(request, response) {
-  var msg = "※何かメッセージを書いて下さい。";
-  var content = ejs.render(index_page, {
+  let msg = "※何かメッセージを書いて下さい。";
+  const content = ejs.render(index_page, {
     title: "Index",
     content: msg,
     data: message_data,
